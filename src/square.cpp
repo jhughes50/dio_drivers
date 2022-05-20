@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     ros::param::get("/square/altitude", alt);
     ros::param::get("/square/side_length", side_length);
     ros::param::get("/square/threshold", threshold);
-    ros::param::get("/square/velocity", velocity)
+    ros::param::get("/square/velocity", velocity);
 
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
