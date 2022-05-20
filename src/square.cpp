@@ -20,7 +20,7 @@ void pose_cb(const geometry_msgs::PoseStamped::ConstPtr& msg)
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "offb_node");
+    ros::init(argc, argv, "offboard_square");
     ros::NodeHandle nh;
     double alt, side_length, threshold, velocity;
     int points[5][2] = {{0,0},{2,0},{2,2},{0,2},{0,0}};

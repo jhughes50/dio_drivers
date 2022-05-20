@@ -1,0 +1,4 @@
+<launch>
+    <node name="offboard_square" pkg="dio_drivers" type="square" output="screen" />
+    <rosparam file="$(find dio_drivers)/config/square.yaml"
+</launch>
