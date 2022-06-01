@@ -1,5 +1,5 @@
 square:
-  altitude: 2 # meters
-  side_length: 2 # meters
-  threshold: 0.1 # 10 cm
-  velocity: 1.0 # m/s
+  altitude: 10 # meters
+  side_length: 20 # meters
+  threshold: 0.5 # 10 cm
+  velocity: 0.5 # m/s

@@ -76,9 +76,6 @@ find_package(catkin REQUIRED COMPONENTS
 #   geometry_msgs#   mavros_msgs#   std_msgs
 # )
 
-add_executable(square src/square.cpp)
-target_link_libraries(square ${catkin_LIBRARIES})
-
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
@@ -210,3 +207,5 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+add_executable(square src/square.cpp)
+target_link_libraries(square ${catkin_LIBRARIES})
