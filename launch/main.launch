@@ -1,0 +1,7 @@
+<launch>
+    <node name="mocap_pose" pkg="dio_drivers" type="mocap_pose" output="screen" >
+    	   <param name="name" value="Archimedes" />
+    </node>
+    <rosparam file="$(find dio_drivers)/config/shapes.yaml" />
+    <!--include file="$(find dlio_logger)/launch/logger.launch" /-->
+</launch> 

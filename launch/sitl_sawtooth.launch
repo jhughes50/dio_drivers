@@ -1,0 +1,4 @@
+<launch>
+    <node name="offboard_sawtooth" pkg="dio_drivers" type="sawtooth" output="screen" />
+    <rosparam file="$(find dio_drivers)/config/shapes.yaml" />
+</launch> 

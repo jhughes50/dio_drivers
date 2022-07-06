@@ -1,0 +1,4 @@
+<launch>
+    <node name="offboard_helix" pkg="dio_drivers" type="helix" output="screen" />
+    <rosparam file="$(find dio_drivers)/config/shapes.yaml" />
+</launch>

@@ -1,0 +1,25 @@
+general:
+  threshold: 0.2 # half meter
+
+
+square:
+  altitude: 10 # meters
+  side_length: 20 # meters
+  velocity: 0.5 # m/s
+  repeat: 3
+
+helix:
+  min_alt: 10 # meters
+  radius: 5 # meters
+  seperation: 5 # meters
+
+figure8:
+  altitude: 10
+  alpha: 25 # meters from origin
+  density: 10
+  
+sawtooth:
+  min_alt: 10
+  max_alt: 15
+  travel: 50
+  wavelength: 10

@@ -3,6 +3,7 @@
 #include <ros/console.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Twist.h>
+#include <mavros_msgs/PositionTarget.h>
 #include <mavros_msgs/CommandInt.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
@@ -27,15 +28,15 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
     double alt, side_length, threshold, velocity;
     int count = 0;
-    
+    int repeat;
 
     ros::Subscriber local_pose_sub = nh.subscribe<geometry_msgs::PoseStamped>
             ("mavros/local_position/pose", 10, pose_cb);
     ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>
             ("mavros/state", 10, state_cb);
 
-    ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
-            ("mavros/setpoint_position/local", 10);
+    ros::Publisher local_pos_pub = nh.advertise<mavros_msgs::PositionTarget>
+            ("mavros/setpoint_raw/local", 10);
     ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>
             ("mavros/setpoint_velocity/cmd_vel_unstamped",10);
     
@@ -48,8 +49,9 @@ int main(int argc, char **argv)
 
     ros::param::get("/square/altitude", alt);
     ros::param::get("/square/side_length", side_length);
-    ros::param::get("/square/threshold", threshold);
+    ros::param::get("/general/threshold", threshold);
     ros::param::get("/square/velocity", velocity);
+    ros::param::get("/square/repeat", repeat);
 
     double points[5][3] = {{0.0,0.0,0.0},{side_length,0.0,0.0},{side_length,side_length,M_PI_2},{0.0,side_length,M_PI},{0.0,0.0,3*M_PI_2}};
 
@@ -62,12 +64,12 @@ int main(int argc, char **argv)
         rate.sleep();
     }
 
-    geometry_msgs::PoseStamped pose;
+    mavros_msgs::PositionTarget pose;
     geometry_msgs::Twist vel;
-    pose.pose.position.x = 0;
-    pose.pose.position.y = 0;
-    pose.pose.position.z = alt;
-
+    pose.position.x = 0;
+    pose.position.y = 0;
+    pose.position.z = alt;
+    pose.coordinate_frame = 1;
     //send a few setpoints before starting
     for(int i = 100; ros::ok() && i > 0; --i){
         local_pos_pub.publish(pose);
@@ -123,19 +125,18 @@ int main(int argc, char **argv)
                 break;
             }
         }
-
-        if( std::abs(current_pose.pose.position.x - pose.pose.position.x) < threshold &&
-            std::abs(current_pose.pose.position.y - pose.pose.position.y) < threshold )
-        {
-            pose.pose.position.x = points[count][0];
-            pose.pose.position.y = points[count][1];
-            pose.pose.position.z = alt;
-            pose.pose.orientation.z = points[count][2];
-
-            ROS_INFO("WP REACHED");
-            count ++;
-        }    
-        
+	  
+	if( std::abs(current_pose.pose.position.x - pose.position.x) < threshold &&
+	    std::abs(current_pose.pose.position.y - pose.position.y) < threshold )
+	  {
+	    pose.position.x = points[count][0];
+	    pose.position.y = points[count][1];
+	    pose.position.z = alt;
+	    pose.yaw = points[count][2];
+	    pose.coordinate_frame = 1;
+	    ROS_INFO("WP REACHED");
+	    count ++;
+	  }
         local_pos_pub.publish(pose);
 	
         ros::spinOnce();
